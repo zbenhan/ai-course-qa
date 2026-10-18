@@ -4,14 +4,14 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <meta name="color-scheme" content="light" />
-<title>AI 使用分享 · 现场提问与投票</title>
+<title>AI 使用分享 · 现场互动</title>
 <meta name="description" content="AI 使用分享课程现场互动：提交问题、投票选出最关心的问题、下载课程课件。" />
 <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
 <div class="page">
 
-  <header class="hero">
+  <header class="hero" id="heroHome">
     <div class="hero-main">
       <p class="eyebrow">AI 使用分享 · 现场互动</p>
       <h1>AI 使用分享</h1>
@@ -37,11 +37,41 @@
 
   <div class="banner banner-error" id="errorBanner" hidden></div>
 
-  <main class="grid">
+  <!-- 首页：三个入口 -->
+  <main class="home-nav" id="viewHome">
+    <a class="nav-card" href="#/ask">
+      <span class="nav-num">1</span>
+      <span class="nav-body">
+        <span class="nav-title">我的问题</span>
+        <span class="nav-desc">写下你的问题，并查看自己提过的问题</span>
+      </span>
+      <span class="nav-arrow">›</span>
+    </a>
+    <a class="nav-card" href="#/vote">
+      <span class="nav-num">2</span>
+      <span class="nav-body">
+        <span class="nav-title">问题投票</span>
+        <span class="nav-desc">看全部问题与票数，为最关心的问题投一票</span>
+      </span>
+      <span class="nav-arrow">›</span>
+    </a>
+    <a class="nav-card" href="#/files">
+      <span class="nav-num">3</span>
+      <span class="nav-body">
+        <span class="nav-title">课件下载</span>
+        <span class="nav-desc">下载本次课程的课件文件</span>
+      </span>
+      <span class="nav-arrow">›</span>
+    </a>
+  </main>
 
-    <section class="card" id="askCard">
-      <h2 class="card-title">我要提问</h2>
-      <p class="card-desc">问题会立即出现在下方列表，所有人都能看到。</p>
+  <!-- 功能页 1：我的问题 -->
+  <main class="view" id="viewAsk" hidden>
+    <a class="back" href="#/">‹ 返回首页</a>
+
+    <section class="card">
+      <h2 class="card-title">提交我的问题</h2>
+      <p class="card-desc">提交后会立即出现在「问题投票」页，所有人都能看到。</p>
       <form id="askForm" autocomplete="off">
         <div class="field">
           <label for="authorInput">称呼（可留空）</label>
@@ -56,10 +86,22 @@
       </form>
     </section>
 
-    <section class="card" id="voteCard">
+    <section class="card">
+      <h2 class="card-title">我提过的问题</h2>
+      <p class="card-desc">这里只显示本设备提交的问题及其票数。</p>
+      <ul class="question-list" id="mineList"></ul>
+      <p class="empty" id="mineEmpty" hidden>你还没有提过问题，可以在上方提交。</p>
+    </section>
+  </main>
+
+  <!-- 功能页 2：问题投票 -->
+  <main class="view" id="viewVote" hidden>
+    <a class="back" href="#/">‹ 返回首页</a>
+
+    <section class="card">
       <div class="card-head">
         <div>
-          <h2 class="card-title">问题与投票</h2>
+          <h2 class="card-title">问题投票</h2>
           <p class="card-desc">点击「投一票」支持你关心的问题。</p>
         </div>
         <div class="vote-budget">
@@ -87,14 +129,18 @@
         <button type="button" class="btn btn-ghost btn-sm" id="refreshBtn">立即刷新</button>
       </div>
     </section>
+  </main>
 
-    <section class="card" id="downloadCard">
-      <h2 class="card-title">课程课件下载</h2>
+  <!-- 功能页 3：课件下载 -->
+  <main class="view" id="viewFiles" hidden>
+    <a class="back" href="#/">‹ 返回首页</a>
+
+    <section class="card">
+      <h2 class="card-title">课件下载</h2>
       <p class="card-desc">课件已放在本站仓库中，点击即可下载。</p>
       <ul class="download-list" id="downloadList"></ul>
       <p class="empty" id="downloadEmpty" hidden>课件还未上传，稍后再来看看。</p>
     </section>
-
   </main>
 
   <footer class="foot">

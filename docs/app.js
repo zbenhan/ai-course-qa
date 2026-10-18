@@ -211,17 +211,23 @@
     return li;
   }
 
-  function renderQuestions() {
-    var list = sortedQuestions();
-    el.questionList.textContent = '';
+  function fillList(container, emptyNode, list) {
+    container.textContent = '';
     if (!list.length) {
-      el.emptyHint.hidden = false;
+      emptyNode.hidden = false;
       return;
     }
-    el.emptyHint.hidden = true;
+    emptyNode.hidden = true;
     var frag = document.createDocumentFragment();
     list.forEach(function (q, i) { frag.appendChild(buildQuestionItem(q, i)); });
-    el.questionList.appendChild(frag);
+    container.appendChild(frag);
+  }
+
+  function renderQuestions() {
+    fillList(el.questionList, el.emptyHint, sortedQuestions());
+    fillList(el.mineList, el.mineEmpty, state.questions
+      .filter(function (q) { return q.mine; })
+      .sort(function (a, b) { return b.createdAt - a.createdAt; }));
   }
 
   function renderDownloads() {
@@ -265,6 +271,22 @@
   function setSync(ok, text) {
     el.syncDot.className = 'sync-dot' + (ok ? ' is-ok' : ' is-err');
     el.syncText.textContent = text;
+  }
+
+  // ---------- 路由：首页 ⇄ 三个功能页 ----------
+  var ROUTES = ['#/', '#/ask', '#/vote', '#/files'];
+  var ROUTE_TITLES = { '#/ask': '我的问题', '#/vote': '问题投票', '#/files': '课件下载' };
+
+  function applyRoute() {
+    var hash = ROUTES.indexOf(location.hash) >= 0 ? location.hash : '#/';
+    el.heroHome.hidden = hash !== '#/';
+    el.viewHome.hidden = hash !== '#/';
+    el.viewAsk.hidden = hash !== '#/ask';
+    el.viewVote.hidden = hash !== '#/vote';
+    el.viewFiles.hidden = hash !== '#/files';
+    var page = ROUTE_TITLES[hash];
+    document.title = (page ? page + ' · ' : '') + 'AI 使用分享 · 现场互动';
+    window.scrollTo(0, 0);
   }
 
   // ---------- 行为 ----------
@@ -403,6 +425,11 @@
 
   function init() {
     el = {
+      heroHome: $('heroHome'),
+      viewHome: $('viewHome'),
+      viewAsk: $('viewAsk'),
+      viewVote: $('viewVote'),
+      viewFiles: $('viewFiles'),
       qrImg: $('qrImg'),
       qrTip: $('qrTip'),
       siteUrl: $('siteUrl'),
@@ -419,6 +446,8 @@
       textCounter: $('textCounter'),
       questionList: $('questionList'),
       emptyHint: $('emptyHint'),
+      mineList: $('mineList'),
+      mineEmpty: $('mineEmpty'),
       statsText: $('statsText'),
       syncDot: $('syncDot'),
       syncText: $('syncText'),
@@ -432,6 +461,8 @@
     setupConfigState();
     renderDownloads();
     syncTabs();
+    applyRoute();
+    window.addEventListener('hashchange', applyRoute);
 
     el.askForm.addEventListener('submit', submitQuestion);
     el.refreshBtn.addEventListener('click', function () { refresh(true); });
