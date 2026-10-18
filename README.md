@@ -96,7 +96,7 @@ npm install
 npm run qrcode -- https://<用户名>.github.io/<仓库名>/
 ```
 
-会生成 `docs/qrcode.png` 和 `docs/qrcode.svg`。页面顶部的二维码区会自动读取 `docs/qrcode.png`，投屏时直接展示即可；把 png 发给听众也能直接扫码。
+会生成 `docs/qrcode.png` 和 `docs/qrcode.svg`。网页本身不显示二维码，把 png 单独发给听众、或另外投屏展示即可扫码。
 
 ## 四、放课件
 
@@ -105,7 +105,7 @@ npm run qrcode -- https://<用户名>.github.io/<仓库名>/
 
 ```js
 COURSEWARE: [
-  { title: 'AI 使用分享 · 课程课件', desc: 'PDF，约 3 MB', url: 'files/ai-course-slides.pdf' },
+  { title: '分行批发业务 AI 赋能与行内外系统实战', desc: 'PPTX，约 26 MB', url: 'files/ai-course-slides.pptx' },
 ],
 ```
 

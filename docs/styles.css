@@ -43,10 +43,6 @@ body {
 
 /* ---------- Hero ---------- */
 .hero {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 24px;
-  align-items: center;
   background: linear-gradient(135deg, #4b56d2 0%, #6f5bd6 55%, #8b5ad9 100%);
   color: #fff;
   border-radius: 22px;
@@ -64,8 +60,8 @@ body {
 
 .hero h1 {
   margin: 0;
-  font-size: 30px;
-  line-height: 1.25;
+  font-size: 28px;
+  line-height: 1.35;
   letter-spacing: -.01em;
 }
 
@@ -91,41 +87,6 @@ body {
   background: rgba(255, 255, 255, .16);
   border: 1px solid rgba(255, 255, 255, .22);
 }
-
-.hero-qr {
-  width: 220px;
-  background: #fff;
-  border-radius: 16px;
-  padding: 12px;
-  text-align: center;
-  box-shadow: 0 10px 26px rgba(0, 0, 0, .16);
-}
-
-.hero-qr img {
-  display: block;
-  width: 100%;
-  height: auto;
-  border-radius: 8px;
-  background: #fff;
-}
-
-.hero-qr img[data-missing="1"] { display: none; }
-
-.qr-tip {
-  margin: 8px 0 4px;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--ink);
-}
-
-.qr-url {
-  margin: 0 0 8px;
-  font-size: 11px;
-  color: var(--ink-faint);
-  word-break: break-all;
-}
-
-.hero-qr .btn { width: 100%; justify-content: center; }
 
 /* ---------- Banner ---------- */
 .banner {
@@ -650,17 +611,8 @@ code {
 /* ---------- Responsive ---------- */
 @media (max-width: 720px) {
   .page { padding: 16px 14px 48px; }
-  .hero {
-    grid-template-columns: 1fr;
-    padding: 22px;
-    text-align: left;
-  }
-  .hero h1 { font-size: 25px; }
-  .hero-qr {
-    width: 100%;
-    max-width: 300px;
-    margin: 0 auto;
-  }
+  .hero { padding: 22px; }
+  .hero h1 { font-size: 22px; }
   .card { padding: 18px; }
   .question { grid-template-columns: minmax(0, 1fr) auto; }
   .rank { display: none; }

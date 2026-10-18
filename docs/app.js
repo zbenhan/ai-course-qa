@@ -274,6 +274,7 @@
   }
 
   // ---------- 路由：首页 ⇄ 三个功能页 ----------
+  var COURSE_NAME = '分行批发业务 AI 赋能与行内外系统实战';
   var ROUTES = ['#/', '#/ask', '#/vote', '#/files'];
   var ROUTE_TITLES = { '#/ask': '我的问题', '#/vote': '问题投票', '#/files': '课件下载' };
 
@@ -285,7 +286,7 @@
     el.viewVote.hidden = hash !== '#/vote';
     el.viewFiles.hidden = hash !== '#/files';
     var page = ROUTE_TITLES[hash];
-    document.title = (page ? page + ' · ' : '') + 'AI 使用分享 · 现场互动';
+    document.title = (page ? page + ' · ' : '') + COURSE_NAME;
     window.scrollTo(0, 0);
   }
 
@@ -395,23 +396,6 @@
     });
   }
 
-  function setupQr() {
-    var url = location.origin + location.pathname;
-    el.siteUrl.textContent = url;
-    el.qrImg.addEventListener('error', function () {
-      el.qrImg.dataset.missing = '1';
-      el.qrTip.textContent = '二维码待生成（见 README）';
-    });
-    el.copyLinkBtn.addEventListener('click', async function () {
-      try {
-        await navigator.clipboard.writeText(url);
-        toast('链接已复制');
-      } catch (e) {
-        window.prompt('请手动复制链接：', url);
-      }
-    });
-  }
-
   function setupConfigState() {
     el.maxVotesText.textContent = String(MAX_VOTES);
     el.remainingVotes.textContent = String(MAX_VOTES);
@@ -430,10 +414,6 @@
       viewAsk: $('viewAsk'),
       viewVote: $('viewVote'),
       viewFiles: $('viewFiles'),
-      qrImg: $('qrImg'),
-      qrTip: $('qrTip'),
-      siteUrl: $('siteUrl'),
-      copyLinkBtn: $('copyLinkBtn'),
       configBanner: $('configBanner'),
       configBannerText: $('configBannerText'),
       errorBanner: $('errorBanner'),
@@ -457,7 +437,6 @@
       adminToggle: $('adminToggle'),
     };
 
-    setupQr();
     setupConfigState();
     renderDownloads();
     syncTabs();
