@@ -1,0 +1,15 @@
+{
+  "name": "ai-course-qa",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "AI 使用分享课程现场互动站点（GitHub Pages 前端 + VPS 后端）",
+  "scripts": {
+    "qrcode": "node tools/gen-qrcode.mjs",
+    "serve": "node tools/serve.mjs",
+    "server": "node server/src/index.js"
+  },
+  "devDependencies": {
+    "qrcode": "^1.5.4"
+  }
+}

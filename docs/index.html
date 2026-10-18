@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="color-scheme" content="light" />
+<title>AI 使用分享 · 现场提问与投票</title>
+<meta name="description" content="AI 使用分享课程现场互动：提交问题、投票选出最关心的问题、下载课程课件。" />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<div class="page">
+
+  <header class="hero">
+    <div class="hero-main">
+      <p class="eyebrow">AI 使用分享 · 现场互动</p>
+      <h1>AI 使用分享</h1>
+      <p class="hero-sub">扫码进入，写下你的问题，为最关心的问题投票。</p>
+      <ul class="hero-points">
+        <li>每人最多 <strong id="maxVotesText">3</strong> 票</li>
+        <li>票数实时同步，所有人可见</li>
+        <li>按票数排序，现场优先解答</li>
+      </ul>
+    </div>
+    <div class="hero-qr" id="qrCard">
+      <img id="qrImg" src="qrcode.png" alt="扫码进入本页面" width="220" height="220" />
+      <p class="qr-tip" id="qrTip">扫码进入</p>
+      <p class="qr-url" id="siteUrl"></p>
+      <button type="button" class="btn btn-ghost btn-sm" id="copyLinkBtn">复制链接</button>
+    </div>
+  </header>
+
+  <div class="banner banner-warn" id="configBanner" hidden>
+    <strong>后端接口还没配置。</strong>
+    <span id="configBannerText">请先在 <code>docs/config.js</code> 里填写 VPS 上的 API 地址。</span>
+  </div>
+
+  <div class="banner banner-error" id="errorBanner" hidden></div>
+
+  <main class="grid">
+
+    <section class="card" id="askCard">
+      <h2 class="card-title">我要提问</h2>
+      <p class="card-desc">问题会立即出现在下方列表，所有人都能看到。</p>
+      <form id="askForm" autocomplete="off">
+        <div class="field">
+          <label for="authorInput">称呼（可留空）</label>
+          <input id="authorInput" type="text" maxlength="20" placeholder="例如：小王 / 市场部" />
+        </div>
+        <div class="field">
+          <label for="textInput">你的问题</label>
+          <textarea id="textInput" rows="3" maxlength="200" placeholder="例如：日常写周报，AI 怎么用最省时间？"></textarea>
+          <div class="field-meta"><span id="textCounter">0 / 200</span></div>
+        </div>
+        <button type="submit" class="btn btn-primary" id="askSubmit">提交问题</button>
+      </form>
+    </section>
+
+    <section class="card" id="voteCard">
+      <div class="card-head">
+        <div>
+          <h2 class="card-title">问题与投票</h2>
+          <p class="card-desc">点击「投一票」支持你关心的问题。</p>
+        </div>
+        <div class="vote-budget">
+          <span class="vote-budget-num" id="remainingVotes">-</span>
+          <span class="vote-budget-label">剩余票数</span>
+        </div>
+      </div>
+
+      <div class="toolbar">
+        <div class="tabs" role="tablist">
+          <button type="button" class="tab is-active" data-sort="hot" role="tab">按票数</button>
+          <button type="button" class="tab" data-sort="new" role="tab">按时间</button>
+        </div>
+        <div class="toolbar-right">
+          <span class="sync-dot" id="syncDot" title="数据同步状态"></span>
+          <span class="sync-text" id="syncText">同步中…</span>
+        </div>
+      </div>
+
+      <ul class="question-list" id="questionList"></ul>
+      <p class="empty" id="emptyHint" hidden>还没有人提问，你可以成为第一个。</p>
+
+      <div class="card-foot">
+        <span id="statsText"></span>
+        <button type="button" class="btn btn-ghost btn-sm" id="refreshBtn">立即刷新</button>
+      </div>
+    </section>
+
+    <section class="card" id="downloadCard">
+      <h2 class="card-title">课程课件下载</h2>
+      <p class="card-desc">课件已放在本站仓库中，点击即可下载。</p>
+      <ul class="download-list" id="downloadList"></ul>
+      <p class="empty" id="downloadEmpty" hidden>课件还未上传，稍后再来看看。</p>
+    </section>
+
+  </main>
+
+  <footer class="foot">
+    <span>AI 使用分享 · 现场互动页</span>
+    <button type="button" class="btn btn-ghost btn-sm" id="adminToggle">管理员</button>
+  </footer>
+
+</div>
+
+<script src="config.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

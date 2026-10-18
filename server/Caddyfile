@@ -1,0 +1,14 @@
+# Caddy 反向代理配置：把 VPS 上的 127.0.0.1:8787 暴露为 HTTPS 域名
+#
+# 使用步骤：
+#   1. 把下方域名换成你自己的域名，并确保该域名已解析到这台 VPS
+#   2. 安装 Caddy 后执行：caddy reload --config Caddyfile
+#      （或直接 caddy run --config Caddyfile）
+#   3. Caddy 会自动申请并续期 Let's Encrypt 证书，无需手工配置证书
+#
+# 注意：国内服务器把域名对外提供 Web 服务通常需要完成 ICP 备案。
+
+qa.example.com {
+	encode gzip
+	reverse_proxy 127.0.0.1:8787
+}

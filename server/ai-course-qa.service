@@ -1,0 +1,31 @@
+# 不使用 Docker 时的 systemd 部署方式
+#
+# 使用步骤：
+#   1. 把整个 server 目录放到服务器上，例如 /opt/ai-course-qa/server
+#   2. 修改下方 Environment 里的 ADMIN_TOKEN / ALLOWED_ORIGINS
+#   3. sudo cp ai-course-qa.service /etc/systemd/system/
+#   4. sudo systemctl daemon-reload && sudo systemctl enable --now ai-course-qa
+#   5. sudo systemctl status ai-course-qa
+
+[Unit]
+Description=AI Course Q&A API
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/ai-course-qa/server
+Environment=NODE_ENV=production
+Environment=PORT=8787
+Environment=HOST=127.0.0.1
+Environment=DATA_DIR=/opt/ai-course-qa/data
+Environment=MAX_VOTES_PER_DEVICE=3
+Environment=ALLOWED_ORIGINS=*
+Environment=ADMIN_TOKEN=change-me-to-a-random-string
+ExecStart=/usr/bin/node src/index.js
+Restart=always
+RestartSec=3
+User=www-data
+Group=www-data
+
+[Install]
+WantedBy=multi-user.target

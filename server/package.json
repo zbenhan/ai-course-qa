@@ -1,0 +1,14 @@
+{
+  "name": "ai-course-qa-server",
+  "version": "1.0.0",
+  "private": true,
+  "description": "AI 使用分享课程 —— 现场提问与投票接口服务（零依赖）",
+  "type": "module",
+  "main": "src/index.js",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "start": "node src/index.js"
+  }
+}
