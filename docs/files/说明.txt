@@ -1,5 +1,0 @@
-把课程课件（PPT / PDF）放到这个目录里，然后把文件名填到 docs/config.js 的 COURSEWARE 中，例如：
-
-  { title: 'AI 使用分享 · 课程课件', desc: 'PDF，约 3 MB', url: 'files/ai-course-slides.pdf' }
-
-部署后听众就能在页面底部直接点击下载。

@@ -16,6 +16,6 @@ window.APP_CONFIG = {
 
   /** 课程课件列表。文件放在 docs/files/ 目录下，改这里即可增删。 */
   COURSEWARE: [
-    { title: 'AI 使用分享 · 课程课件', desc: 'PDF / PPT 均可，放到 docs/files/ 后修改本行路径', url: 'files/ai-course-slides.pdf' },
+    { title: '分行批发业务 AI 赋能与行内外系统实战', desc: 'PPTX，约 26 MB', url: 'files/ai-course-slides.pptx' },
   ],
 };
