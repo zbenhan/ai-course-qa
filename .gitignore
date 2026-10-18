@@ -13,3 +13,6 @@ server/.env
 .DS_Store
 Thumbs.db
 *.log
+
+# IDE 生成的临时产物
+.trae-html-share-packages/
