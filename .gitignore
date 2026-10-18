@@ -9,6 +9,7 @@ data/
 .env
 server/.env
 
-# 系统文件
+# 系统文件与运行时日志
 .DS_Store
 Thumbs.db
+*.log
