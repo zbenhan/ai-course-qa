@@ -66,26 +66,9 @@ body {
 }
 
 .hero-sub {
-  margin: 10px 0 16px;
+  margin: 10px 0 0;
   font-size: 15px;
   opacity: .92;
-}
-
-.hero-points {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.hero-points li {
-  font-size: 13px;
-  padding: 5px 12px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, .16);
-  border: 1px solid rgba(255, 255, 255, .22);
 }
 
 /* ---------- Banner ---------- */

@@ -134,7 +134,6 @@
     if (!s) return;
     el.remainingVotes.textContent = s.remainingVotes;
     el.statsText.textContent = s.questionCount + ' 个问题 · ' + s.voteCount + ' 次投票 · ' + s.voterCount + ' 人参与';
-    el.maxVotesText.textContent = String(s.maxVotesPerDevice || MAX_VOTES);
   }
 
   function sortedQuestions() {
@@ -401,7 +400,6 @@
   }
 
   function setupConfigState() {
-    el.maxVotesText.textContent = String(MAX_VOTES);
     el.remainingVotes.textContent = String(MAX_VOTES);
     if (!IS_CONFIGURED) {
       el.configBanner.hidden = false;
@@ -421,7 +419,6 @@
       configBanner: $('configBanner'),
       configBannerText: $('configBannerText'),
       errorBanner: $('errorBanner'),
-      maxVotesText: $('maxVotesText'),
       remainingVotes: $('remainingVotes'),
       askForm: $('askForm'),
       askSubmit: $('askSubmit'),
