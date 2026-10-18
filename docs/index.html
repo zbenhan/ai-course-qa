@@ -63,13 +63,13 @@
       <p class="card-desc">提交后会立即出现在「问题投票」页，所有人都能看到。</p>
       <form id="askForm" autocomplete="off">
         <div class="field">
-          <label for="authorInput">称呼（可留空）</label>
-          <input id="authorInput" type="text" maxlength="20" placeholder="例如：小王 / 市场部" />
+          <label for="textInput">你的问题</label>
+          <textarea id="textInput" rows="3" maxlength="200"></textarea>
+          <div class="field-meta"><span id="textCounter">0 / 200</span></div>
         </div>
         <div class="field">
-          <label for="textInput">你的问题</label>
-          <textarea id="textInput" rows="3" maxlength="200" placeholder="例如：日常写周报，AI 怎么用最省时间？"></textarea>
-          <div class="field-meta"><span id="textCounter">0 / 200</span></div>
+          <label for="authorInput">称呼（可留空）</label>
+          <input id="authorInput" type="text" maxlength="20" />
         </div>
         <button type="submit" class="btn btn-primary" id="askSubmit">提交问题</button>
       </form>
