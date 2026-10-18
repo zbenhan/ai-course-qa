@@ -304,7 +304,11 @@
       setSync(true, '已同步 · ' + new Date().toLocaleTimeString('zh-CN', { hour12: false }));
     } catch (err) {
       setSync(false, '同步失败');
-      showError('无法连接后端接口：' + err.message + '。请检查 config.js 中的 API_BASE 是否为可访问的 https 地址。');
+      if (err.status === 429) {
+        showError('后端返回「请求过于频繁」，页面会自动重试；若持续出现，请检查接口是否被限流。');
+      } else {
+        showError('无法连接后端接口：' + err.message + '。请检查 config.js 中的 API_BASE 是否为可访问的 https 地址。');
+      }
     } finally {
       state.loading = false;
     }

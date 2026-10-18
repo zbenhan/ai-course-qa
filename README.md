@@ -149,7 +149,7 @@ npm run serve
 | `MAX_VOTES_PER_DEVICE` | `3` | 每设备最大票数 |
 | `ADMIN_TOKEN` | 空 | 管理员令牌，为空则无法删除问题 |
 | `ALLOWED_ORIGINS` | `*` | 允许的网页来源，多个逗号分隔，建议收紧为你的站点地址 |
-| `RATE_LIMIT_PER_MIN` | `30` | 单 IP 每分钟请求上限 |
+| `RATE_LIMIT_PER_MIN` | `240` | 单 IP 每分钟**写请求**（POST / DELETE）上限。读接口（GET）不限流，否则会场 Wi-Fi 下共用一个出口 IP 的听众会互相拖累 |
 
 数据保存在 `DATA_DIR/data.json`，备份这个文件即可。
 
@@ -157,5 +157,6 @@ npm run serve
 
 - **页面顶部提示「后端接口还没配置」**：`docs/config.js` 的 `API_BASE` 仍是占位域名。
 - **页面显示「无法连接后端接口」**：多为 https 证书、域名解析或 CORS；先用 `curl https://你的域名/api/health` 确认后端可达。
+- **页面显示「请求过于频繁」**：后端限流触发。读接口不限流、写接口默认 240 次/分钟/IP，正常使用不会触发；如确认误伤，调大 `RATE_LIMIT_PER_MIN` 后 `systemctl restart ai-course-qa`。
 - **投票提示「票已用完」**：同一浏览器已投满 3 票；清缓存或换设备可重置（防刷强度按需自行调整）。
-- **二维码不显示**：还没执行 `npm run qrcode`，或 `docs/qrcode.png` 未提交。
+- **要用的二维码在哪**：执行 `npm run qrcode` 生成 `docs/qrcode.png`，网页本身不展示，自行投屏或发给听众即可。

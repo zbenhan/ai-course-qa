@@ -30,7 +30,7 @@ const DATA_DIR = process.env.DATA_DIR || path.join(__dirname, '..', 'data');
 const DATA_FILE = path.join(DATA_DIR, 'data.json');
 const ADMIN_TOKEN = (process.env.ADMIN_TOKEN || '').trim();
 const MAX_VOTES = Math.max(1, Number(process.env.MAX_VOTES_PER_DEVICE || 3));
-const RATE_LIMIT_PER_MIN = Math.max(5, Number(process.env.RATE_LIMIT_PER_MIN || 30));
+const RATE_LIMIT_PER_MIN = Math.max(5, Number(process.env.RATE_LIMIT_PER_MIN || 240));
 const ALLOWED_ORIGINS = (process.env.ALLOWED_ORIGINS || '*')
   .split(',')
   .map((s) => s.trim())
@@ -134,7 +134,9 @@ function readJson(req) {
   });
 }
 
-// 简易限流：单 IP 每分钟 N 次
+// 简易限流：单 IP 每分钟 N 次，只统计写请求（POST / DELETE）。
+// 读接口（GET /api/questions 等）是公开且廉价的轮询请求，不限流：
+// 会场 Wi-Fi 下所有听众共用一个出口 IP，若连读请求一起限流，大家会互相拖累。
 const rateHits = new Map();
 function isRateLimited(ip) {
   const now = Date.now();
@@ -319,7 +321,8 @@ const server = http.createServer(async (req, res) => {
     console.log(`${new Date().toISOString()} ${req.method} ${url.pathname} ${clientIp(req)}`);
   }
 
-  if (isRateLimited(clientIp(req))) {
+  const isWriteRequest = req.method === 'POST' || req.method === 'DELETE';
+  if (isWriteRequest && isRateLimited(clientIp(req))) {
     return send(res, 429, { ok: false, error: 'rate_limited', message: '请求过于频繁，请稍后再试' }, cors);
   }
 
