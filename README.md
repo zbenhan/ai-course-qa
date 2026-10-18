@@ -23,73 +23,64 @@
 | `server/` | VPS 后端服务（含 Docker 与 systemd 两种部署方式） |
 | `tools/` | 二维码生成、本地预览脚本 |
 
-## 一、先部署后端（VPS）
+## 一、后端部署（VPS，systemd）
 
-后端零依赖，**不需要 `npm install`**，只要有 Node.js ≥ 18 即可。
+后端零依赖，**不需要 `npm install`**，只要有 Node.js ≥ 18 即可。当前部署实况：
 
-### 方式 A：Docker（推荐）
+| 项目 | 值 |
+| --- | --- |
+| 代码目录 | `/opt/ai-course-qa/server` |
+| 数据目录 | `/opt/ai-course-qa/data`（`data.json`，备份这个文件即可） |
+| systemd 服务 | `ai-course-qa`，监听 `127.0.0.1:8787`，开机自启 |
+| 对外地址 | `https://aiqa.valuegu.com` |
+| nginx 配置 | `/etc/nginx/sites-available/qa-aiqa.conf` |
+| 证书 | `/etc/letsencrypt/live/aiqa.valuegu.com/`，由 `certbot.timer` 自动续期 |
 
-```bash
-# 1. 把 server 目录传到 VPS，例如 /opt/ai-course-qa/server
-# 2. 进入目录并准备环境变量
-cd /opt/ai-course-qa/server
-cp .env.example .env
-vi .env            # 改掉 ADMIN_TOKEN（必改）
-# 3. 启动
-docker compose up -d --build
-curl http://127.0.0.1:8787/api/health
-```
-
-### 方式 B：systemd（没有 Docker）
+常用运维命令：
 
 ```bash
-# 1. 把 server 目录放到 /opt/ai-course-qa/server
-# 2. 改 ai-course-qa.service 里的 ADMIN_TOKEN，然后：
-sudo cp /opt/ai-course-qa/server/ai-course-qa.service /etc/systemd/system/
-sudo systemctl daemon-reload
-sudo systemctl enable --now ai-course-qa
-curl http://127.0.0.1:8787/api/health
+systemctl status ai-course-qa     # 查看状态
+systemctl restart ai-course-qa    # 重启
+journalctl -u ai-course-qa -f     # 实时日志
+curl https://aiqa.valuegu.com/api/health
 ```
+
+### 换一台服务器重新部署
+
+```bash
+# 1. 上传 server/src/index.js 到 /opt/ai-course-qa/server/src/
+# 2. 用 server/ai-course-qa.service 建服务（改掉 ADMIN_TOKEN），然后：
+sudo cp ai-course-qa.service /etc/systemd/system/
+sudo systemctl daemon-reload && sudo systemctl enable --now ai-course-qa
+# 3. 建 nginx vhost（模板 server/nginx-aiqa.conf.example），再签证书：
+sudo certbot --nginx -d aiqa.你的域名.com --non-interactive --agree-tos --redirect
+```
+
+> 也可以用 Docker，`server/docker-compose.yml` 一条命令起容器，与 systemd 二选一即可。
 
 ### 必须配 HTTPS
 
 GitHub Pages 是 https 页面，浏览器会拦截它向 http 接口发起的请求，所以后端**必须对外提供 https**。
 
-用 Caddy 最省事（自动申请续期证书）：
+本项目用 nginx + certbot：vhost 先只监听 80 端口并反代到 `127.0.0.1:8787`（模板见 `server/nginx-aiqa.conf.example`），然后执行
 
 ```bash
-# 编辑 server/Caddyfile，把 qa.example.com 换成你的域名
-sudo caddy reload --config /opt/ai-course-qa/server/Caddyfile
+sudo certbot --nginx -d aiqa.valuegu.com --non-interactive --agree-tos --redirect
 ```
 
-已有 Nginx 的话，等价配置：
+certbot 会自动补上 443 监听、证书路径，并添加 80 → 443 跳转。
 
-```nginx
-server {
-    listen 443 ssl;
-    server_name qa.example.com;
-    ssl_certificate     /etc/letsencrypt/live/qa.example.com/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/qa.example.com/privkey.pem;
+> 子域名的 DNS 必须设为 **仅 DNS（灰云）**，走 Cloudflare 橙云会拦截 HTTP-01 校验。
+> 不想用 certbot 也可以改用 Caddy 自动 HTTPS，见 `server/Caddyfile`。
 
-    location / {
-        proxy_pass http://127.0.0.1:8787;
-        proxy_set_header Host $host;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-    }
-}
-```
-
-> 没有域名时，可以用 `cloudflared tunnel` 把 `127.0.0.1:8787` 映射成一个 https 地址，无需域名和备案。
-> 国内服务器绑域名对外提供 Web 服务通常需要 ICP 备案。
-
-部署完成后验证：`curl https://qa.example.com/api/health` 返回 `{"ok":true,...}` 即可。
+部署完成后验证：`curl https://aiqa.valuegu.com/api/health` 返回 `{"ok":true,...}` 即可。
 
 ## 二、部署前端（GitHub Pages）
 
 1. 把 `docs/config.js` 里的 `API_BASE` 改成你的后端地址：
 
    ```js
-   API_BASE: 'https://qa.example.com',
+   API_BASE: 'https://aiqa.valuegu.com',
    ```
 
 2. 推送仓库后，在 GitHub 仓库 **Settings → Pages** 里选择：

@@ -1,0 +1,24 @@
+# aiqa.valuegu.com 的 nginx vhost 模板
+#
+# 用法：先放到 /etc/nginx/sites-available/ 并软链到 sites-enabled/，nginx -t 通过后 reload；
+#       再执行 certbot 自动补上 443 监听与证书：
+#         certbot --nginx -d aiqa.valuegu.com --non-interactive --agree-tos --redirect
+#
+# 注意：文件名建议保持 qa- 前缀，使它在 sites-enabled 的字母序中排在 final-https 之后，
+#       避免抢占 80 端口的默认 server 而改变其他站点的行为。
+
+server {
+    listen 80;
+    server_name aiqa.valuegu.com;
+
+    location / {
+        proxy_pass http://127.0.0.1:8787/;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_read_timeout 30s;
+        client_max_body_size 1m;
+    }
+}

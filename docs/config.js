@@ -6,7 +6,7 @@ window.APP_CONFIG = {
    * VPS 上后端接口的地址（必须以 https:// 开头，否则 GitHub Pages 会拦截请求）。
    * 例如：'https://qa.your-domain.com'
    */
-  API_BASE: 'https://qa.your-domain.com',
+  API_BASE: 'https://aiqa.valuegu.com',
 
   /** 每人最多可投的票数（需与后端 MAX_VOTES_PER_DEVICE 保持一致） */
   MAX_VOTES: 3,
