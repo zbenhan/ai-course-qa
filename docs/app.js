@@ -256,8 +256,7 @@
       var link = document.createElement('a');
       link.className = 'download-link';
       link.href = item.url;
-      link.setAttribute('download', '');
-      link.target = '_blank';
+      link.setAttribute('download', item.filename || item.title || '');
       link.rel = 'noopener';
       link.textContent = '下载';
 
