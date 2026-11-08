@@ -17,5 +17,7 @@ window.APP_CONFIG = {
   /** 课程课件列表。文件放在 docs/files/ 目录下，改这里即可增删。 */
   COURSEWARE: [
     { title: '分行批发业务AI赋能与行内外系统实战', desc: 'PDF，约 1.8 MB', url: 'files/分行批发业务AI赋能与行内外系统实战.pdf', filename: '分行批发业务AI赋能与行内外系统实战.pdf' },
+    { title: '用好行业方法论，提升供应链战力', desc: 'PDF，约 1.0 MB', url: 'files/用好行业方法论，提升供应链战力.pdf', filename: '用好行业方法论，提升供应链战力.pdf' },
+    { title: '内保直贷业务培训课程', desc: 'PDF，约 0.8 MB', url: 'files/内保直贷业务培训课程.pdf', filename: '内保直贷业务培训课程.pdf' },
   ],
 };
